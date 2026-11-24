@@ -1,0 +1,37 @@
+﻿ECOAR - soundboard pessoal
+==========================
+
+Toca sons no seu microfone (Discord, jogos) e nos seus fones, com teclas de atalho.
+Não precisa instalar .NET nem cabo de áudio virtual.
+
+COMO INSTALAR
+1. Extraia esta pasta inteira para um lugar fixo (ex.: Documentos\Ecoar).
+   Os dois arquivos (Ecoar.exe e EcoarApo.dll) precisam ficar juntos.
+2. Abra o Ecoar.exe.
+   Se aparecer "O Windows protegeu o computador", clique em
+   "Mais informações" -> "Executar assim mesmo" (o programa não é assinado).
+3. Na parte de baixo da janela, escolha o seu microfone e clique em
+   "Instalar no microfone". Aceite o pedido de administrador (só nessa vez).
+4. Adicione seus sons (botão "Adicionar..." ou arraste arquivos para a lista).
+   Formatos: wav, mp3, m4a, aac, wma, flac, ogg.
+5. Selecione um som -> "Definir atalho" -> aperte a tecla (pode ser só uma, ex.: F9).
+
+NO DISCORD
+- Continue usando o seu microfone normal. Não precisa mudar nada.
+- O status no Ecoar fica verde ("Efeito ativo") quando algum programa está usando o microfone.
+
+FECHAR / SAIR
+- Fechar a janela deixa o Ecoar na bandeja (perto do relógio) e os atalhos continuam funcionando.
+- Para sair de vez: botão direito no ícone da bandeja -> Sair.
+
+DESINSTALAR
+1. Dê dois cliques em "Desinstalar efeito do microfone.bat" e aceite o pedido de administrador.
+2. Depois é só apagar a pasta.
+
+LIMITAÇÕES CONHECIDAS
+- Testado em um só PC (Windows 10, headset USB). Em outros PCs, principalmente com
+  Windows 11, pode não funcionar.
+- Se o seu microfone já tiver efeitos de áudio do fabricante (comum em placas Realtek),
+  o Ecoar se recusa a instalar, para não estragar os efeitos que já existem.
+- Se o áudio do microfone parar, rode "Desinstalar efeito do microfone.bat".
+  Ele tira o efeito e reinicia o áudio do Windows.

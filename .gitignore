@@ -1,0 +1,14 @@
+# build output
+bin/
+obj/
+out/
+dist/
+TestResults/
+.vs/
+*.user
+
+# sound files: Mixkit's license does not allow redistributing them; each user adds their own
+sons/
+
+# generated test tones (tools/make-tone.ps1 recreates them)
+tools/*.wav

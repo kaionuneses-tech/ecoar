@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Ecoar</RootNamespace>
+    <AssemblyName>Ecoar</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>ecoar.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
+  </ItemGroup>
+
+  <!-- The APO built by build.ps1 ships next to Ecoar.exe; setup copies it to Program Files. -->
+  <ItemGroup>
+    <!-- Kept as a loose file even in single-file publish: setup copies it from the exe's folder. -->
+    <None Include="..\out\EcoarApo.dll" Link="EcoarApo.dll" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" Condition="Exists('..\out\EcoarApo.dll')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Ecoar.Tests" />
+  </ItemGroup>
+
+</Project>

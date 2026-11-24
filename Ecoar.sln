@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecoar", "app\Ecoar.csproj", "{9B4E2BCE-939A-450C-87C0-87FBBECA3710}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecoar.Tests", "tests\Ecoar.Tests.csproj", "{604E9D71-90EF-40A0-844A-9156485886FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B4E2BCE-939A-450C-87C0-87FBBECA3710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4E2BCE-939A-450C-87C0-87FBBECA3710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4E2BCE-939A-450C-87C0-87FBBECA3710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4E2BCE-939A-450C-87C0-87FBBECA3710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{604E9D71-90EF-40A0-844A-9156485886FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{604E9D71-90EF-40A0-844A-9156485886FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{604E9D71-90EF-40A0-844A-9156485886FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{604E9D71-90EF-40A0-844A-9156485886FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
