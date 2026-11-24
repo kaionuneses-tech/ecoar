@@ -17,8 +17,14 @@ COMO INSTALAR
 5. Selecione um som -> "Definir atalho" -> aperte a tecla (pode ser só uma, ex.: F9).
 
 NO DISCORD
-- Continue usando o seu microfone normal. Não precisa mudar nada.
+- Continue usando o seu microfone normal.
 - O status no Ecoar fica verde ("Efeito ativo") quando algum programa está usando o microfone.
+- IMPORTANTE: a supressão de ruído "Krisp" do Discord apaga sons que não são voz
+  (batidas, buzinas, risadas). Se seus amigos não ouvirem os sons, vá em
+  Configurações -> Voz e vídeo -> Supressão de ruído e troque "Krisp" por
+  "Padrão" (filtro mais leve) ou "Nenhum" (o som passa inteiro, mas o ruído
+  do seu ambiente também). Durante a call, o botão de supressão de ruído no
+  painel de voz liga e desliga o filtro na hora.
 
 FECHAR / SAIR
 - Fechar a janela deixa o Ecoar na bandeja (perto do relógio) e os atalhos continuam funcionando.

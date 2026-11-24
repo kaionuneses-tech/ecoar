@@ -17,6 +17,14 @@ Extraia o zip e siga o `LEIA-ME.txt`. Resumo:
 
 Para remover: `Desinstalar efeito do microfone.bat`.
 
+### Discord: supressão de ruído
+
+A supressão de ruído **Krisp** do Discord apaga sons que não são voz (batidas, buzinas, risadas),
+então seus amigos podem não ouvir os sons do Ecoar. Em **Configurações → Voz e vídeo → Supressão de
+ruído**, troque **Krisp** por **Padrão** (filtro mais leve) ou **Nenhum** (o som passa inteiro, mas o
+ruído do ambiente também). Isso acontece depois que o som sai do microfone, então nenhum soundboard
+consegue contornar. Durante a call, o botão de supressão no painel de voz liga e desliga o filtro.
+
 ## Funcionalidades
 
 - Sons no microfone e nos fones ao mesmo tempo, com volumes separados.
