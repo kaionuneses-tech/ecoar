@@ -46,6 +46,20 @@ public static class HotkeyParser
     }
 }
 
+/// <summary>Registers the stop hotkey (id 0) and each sound's hotkey (id index+1).</summary>
+public static class HotkeyBinder
+{
+    /// <summary>Returns the hotkeys another program holds. Never edits the config: losing a user's hotkey is worse than a warning.</summary>
+    public static List<string> RegisterAll(AppConfig config, Func<int, string, bool> tryRegister)
+    {
+        var failed = new List<string>();
+        if (config.StopHotkey is { } stop && !tryRegister(0, stop)) failed.Add(stop);
+        for (int i = 0; i < config.Sounds.Count; i++)
+            if (config.Sounds[i].Hotkey is { } hk && !tryRegister(i + 1, hk)) failed.Add(hk);
+        return failed;
+    }
+}
+
 /// <summary>Global hotkeys via RegisterHotKey; raises Pressed(id) on WM_HOTKEY.</summary>
 public sealed class Hotkeys : NativeWindow, IDisposable
 {

@@ -61,6 +61,23 @@ public class HotkeysTests
         Assert.Null(HotkeyParser.FromKeyPress(key, ctrl: key == Keys.ControlKey, alt: key == Keys.Menu, shift: key == Keys.ShiftKey));
     }
 
+    [Fact]
+    public void Busy_hotkeys_are_reported_but_never_removed_from_config()
+    {
+        var c = new AppConfig
+        {
+            StopHotkey = "Ctrl+Alt+D0",
+            Sounds = { new SoundEntry("a", "a.mp3", "Ctrl+Alt+C"), new SoundEntry("b", "b.mp3", null), new SoundEntry("c", "c.mp3", "F9") },
+        };
+        var calls = new List<(int Id, string Hotkey)>();
+        var failed = HotkeyBinder.RegisterAll(c, (id, hk) => { calls.Add((id, hk)); return hk != "Ctrl+Alt+C"; });
+
+        Assert.Equal(new[] { "Ctrl+Alt+C" }, failed);
+        Assert.Equal(new[] { (0, "Ctrl+Alt+D0"), (1, "Ctrl+Alt+C"), (3, "F9") }, calls);
+        Assert.Equal("Ctrl+Alt+C", c.Sounds[0].Hotkey);   // kept: the other program may release it later
+        Assert.Equal("Ctrl+Alt+D0", c.StopHotkey);
+    }
+
     [Fact, Trait("Category", "Desktop")]   // needs an interactive desktop
     public void Register_conflict_returns_false()
     {

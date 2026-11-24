@@ -13,7 +13,9 @@ internal static class Program
             return Setup.Run(args);
 
         using var single = new Mutex(true, @"Local\Ecoar-SingleInstance", out bool first);
-        if (!first) return 0;   // already running (in the tray)
+        if (!first) { AppLog.Write("second launch ignored (already running in the tray)"); return 0; }
+        Application.ThreadException += (_, e) => AppLog.Write("UI error: " + e.Exception);
+        AppDomain.CurrentDomain.UnhandledException += (_, e) => AppLog.Write("fatal error: " + e.ExceptionObject);
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);

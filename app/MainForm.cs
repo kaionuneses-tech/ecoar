@@ -19,6 +19,7 @@ public sealed class MainForm : Form
     private readonly NotifyIcon _tray = new() { Text = "Ecoar", Icon = AppIcon, Visible = true };
     private readonly System.Windows.Forms.Timer _statusTimer = new() { Interval = 1000 };
     private bool _exiting;
+    private HashSet<string> _busyHotkeys = new();
 
     public MainForm()
     {
@@ -87,9 +88,11 @@ public sealed class MainForm : Form
         _statusTimer.Start();
 
         LoadMics();
-        RegisterHotkeys();
+        var busy = RegisterHotkeys();
         RefreshList();
+        AppLog.Write($"start: loaded {_config.Sounds.Count} sounds, list shows {_list.Items.Count}, busy hotkeys: {string.Join(", ", busy)}");
         UpdateStatus();
+        Shown += (_, _) => WarnBusy(busy);   // never open a dialog while the window is still being built
     }
 
     private sealed record MicItem(string Id, string Name)
@@ -106,7 +109,11 @@ public sealed class MainForm : Form
         return b;
     }
 
-    private void Save() => SoundLibrary.Save(_config, SoundLibrary.DefaultPath);
+    private void Save()
+    {
+        SoundLibrary.Save(_config, SoundLibrary.DefaultPath);
+        AppLog.Write($"saved {_config.Sounds.Count} sounds");
+    }
 
     private void LoadMics()
     {
@@ -134,7 +141,8 @@ public sealed class MainForm : Form
         foreach (var s in _config.Sounds)
         {
             string name = s.TrimStart is null && s.TrimEnd is null ? s.Name : s.Name + "  ✂";
-            var item = new ListViewItem(new[] { name, s.Hotkey ?? "" }) { Tag = s };
+            string hk = s.Hotkey is null ? "" : _busyHotkeys.Contains(s.Hotkey) ? s.Hotkey + " (em uso)" : s.Hotkey;
+            var item = new ListViewItem(new[] { name, hk }) { Tag = s };
             if (SoundLibrary.FileMissing(s))
             {
                 item.Font = new Font(_list.Font, FontStyle.Strikeout);
@@ -200,7 +208,7 @@ public sealed class MainForm : Form
         if (SelectedIndex < 0) return;
         _config.Sounds.RemoveAt(SelectedIndex);
         Save();
-        RegisterHotkeys();
+        WarnBusy(RegisterHotkeys());
         RefreshList();
     }
 
@@ -222,7 +230,7 @@ public sealed class MainForm : Form
         if (!Prompt.Hotkey(this, out string? hotkey)) return;
         _config.Sounds[i] = _config.Sounds[i] with { Hotkey = hotkey };
         Save();
-        RegisterHotkeys();
+        WarnBusy(RegisterHotkeys());
         RefreshList();
     }
 
@@ -231,25 +239,24 @@ public sealed class MainForm : Form
         if (!Prompt.Hotkey(this, out string? hotkey)) return;
         _config.StopHotkey = hotkey;
         Save();
-        RegisterHotkeys();
+        WarnBusy(RegisterHotkeys());
         UpdateStatus();
     }
 
-    /// <summary>Re-registers every hotkey; a combo taken by another program is reported and cleared.</summary>
-    private void RegisterHotkeys()
+    /// <summary>Re-registers every hotkey. A combo held by another program stays saved and shows "(em uso)".</summary>
+    private List<string> RegisterHotkeys()
     {
         _hotkeys.UnregisterAll();
-        var failed = new List<string>();
-        if (_config.StopHotkey is { } stop && !TryRegister(StopHotkeyId, stop)) { failed.Add(stop); _config.StopHotkey = null; }
-        for (int i = 0; i < _config.Sounds.Count; i++)
-        {
-            if (_config.Sounds[i].Hotkey is not { } hk || TryRegister(i + 1, hk)) continue;
-            failed.Add(hk);
-            _config.Sounds[i] = _config.Sounds[i] with { Hotkey = null };
-        }
-        if (failed.Count == 0) return;
-        Save();
-        MessageBox.Show(this, "Atalho em uso por outro programa: " + string.Join(", ", failed), "Ecoar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        var failed = HotkeyBinder.RegisterAll(_config, TryRegister);
+        _busyHotkeys = new HashSet<string>(failed);
+        return failed;
+    }
+
+    private void WarnBusy(List<string> failed)
+    {
+        if (failed.Count > 0)
+            MessageBox.Show(this, "Atalho em uso por outro programa (continua salvo, mas não funciona enquanto o outro programa estiver aberto): "
+                + string.Join(", ", failed), "Ecoar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 
     private bool TryRegister(int id, string hotkey) =>
